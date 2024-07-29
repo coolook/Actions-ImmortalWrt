@@ -30,7 +30,7 @@ on:
 jobs:
   build:
     if: ${{inputs.ssh == false}}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     name: 🚀 编译 (Build)
     steps:
       - name: 下载编译所需的依赖 (Install the software packages required for compilation)
@@ -49,26 +49,32 @@ jobs:
           path: ImmortalWrt
 
       - name: 复制当前仓库的配置文件到 ImmortalWrt 仓库  (Copy current repo config to ImmortalWrt repo)
-        run: cp -f .config feeds.conf.default diy.sh diy1.sh ImmortalWrt/
-
-      - name: 运行 diy.sh (Run diy.sh)
-        working-directory: ImmortalWrt
-        run: |
-          chmod +x diy.sh
-          ./diy.sh
-
-      - name: 更新并下载 feeds (Update and download feeds)
-        working-directory: ImmortalWrt
-        run: ./scripts/feeds update -a && ./scripts/feeds install -a
-
-      - name: 再次复制当前仓库的配置文件到 ImmortalWrt 仓库 (Copy current repo config to ImmortalWrt repo again)
-        run: cp -f .config feeds.conf.default diy.sh diy1.sh ImmortalWrt/
+        run: cp -f .config feeds.conf.default diy1.sh diy2.sh ImmortalWrt/
 
       - name: 运行 diy1.sh (Run diy1.sh)
         working-directory: ImmortalWrt
         run: |
           chmod +x diy1.sh
           ./diy1.sh
+
+      - name: 更新并下载 feeds (Update and download feeds)
+        working-directory: ImmortalWrt
+        run: |
+          git tag
+          git branch
+          git checkout v23.05.2
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+          make menuconfig
+
+      - name: 再次复制当前仓库的配置文件到 ImmortalWrt 仓库 (Copy current repo config to ImmortalWrt repo again)
+        run: cp -f .config feeds.conf.default diy.sh diy1.sh ImmortalWrt/
+
+      - name: 运行 diy2.sh (Run diy2.sh)
+        working-directory: ImmortalWrt
+        run: |
+          chmod +x diy2.sh
+          ./diy2.sh
 
       - name: 编译前上传配置 (Upload config before build)
         uses: actions/upload-artifact@v4
