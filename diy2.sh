@@ -1,3 +1,4 @@
+#!/bin/sh
 echo '
 
 define KernelPackage/xdp-sockets-diag
