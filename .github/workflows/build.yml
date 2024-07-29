@@ -60,7 +60,7 @@ jobs:
       - name: 更新并下载 feeds (Update and download feeds)
         working-directory: ImmortalWrt
         run: |
-          rm -fr bin/ dl/ staging_dir/ build_dir/ tmp/ "
+          rm -fr bin/ dl/ staging_dir/ build_dir/ tmp/
           git tag
           git branch
           git checkout
