@@ -62,7 +62,7 @@ jobs:
         run: |
           git tag
           git branch
-          git checkout v23.05.2
+          git checkout
           ./scripts/feeds update -a
           ./scripts/feeds install -a
           make menuconfig
