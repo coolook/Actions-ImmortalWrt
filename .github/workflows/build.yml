@@ -76,7 +76,8 @@ jobs:
           ./diy2.sh
 
       - name: make download
-        run: make download -j8
+        working-directory: ImmortalWrt
+        run: make download -j8 V=s
 
       - name: 编译前上传配置 (Upload config before build)
         uses: actions/upload-artifact@v4
